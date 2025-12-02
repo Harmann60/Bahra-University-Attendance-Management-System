@@ -59,6 +59,3 @@ Clean, modern, responsive UI built with TailwindCSS / Bootstrap.
 | Deployment | Vercel / Render / AWS |
 
 ---
-
-## 📁 Project Structure (Example: MERN)
-
