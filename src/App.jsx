@@ -12,13 +12,14 @@ import {
 
 // --- IMPORTANT SETUP FOR LOGO ---
 // To use your local logo:
-// 1. Move your 'logo.png' into the 'src/assets/' folder of your project.
+// 1. Ensure you have a file named 'logo.png' in a folder named 'assets' inside 'src'.
 // 2. Uncomment the line below:
-// import logo from './assets/logo.png';
 
-// For now, we use a placeholder variable.
+// For the online preview to work without the local file, we use a placeholder.
 // If you uncomment the import above, change this line to: const LOGO_FILENAME = logo;
-const LOGO_FILENAME = "/logo.png";
+
+import logo from './assets/logo.png';
+const LOGO_FILENAME = logo;
 
 // --- Configuration ---
 const UNIVERSITY_NAME = "Bahra University";
