@@ -11,13 +11,13 @@ import {
 } from 'lucide-react';
 
 // --- IMPORTANT SETUP FOR LOGO ---
-// The line below causes an error if the file doesn't exist.
-// On your local machine, ensure 'logo.png' is in 'src/assets/' and UNCOMMENT the next line:
+// To use your local logo:
+// 1. Move your 'logo.png' into the 'src/assets/' folder of your project.
+// 2. Uncomment the line below:
 // import logo from './assets/logo.png';
 
-// For this demo to run without the file, we use a placeholder string.
-// If you put logo.png in the 'public' folder, use "/logo.png".
-// If you use the import above, set LOGO_FILENAME = logo;
+// For now, we use a placeholder variable.
+// If you uncomment the import above, change this line to: const LOGO_FILENAME = logo;
 const LOGO_FILENAME = "/logo.png";
 
 // --- Configuration ---
@@ -41,6 +41,7 @@ const INITIAL_STUDENTS = [
     { id: '3', name: 'Harman Jassal', rollNo: 'CSE-2024-003', course: 'B.Tech CSE 2024-28' },
     { id: '4', name: 'Mohit Chauhan', rollNo: 'CSE-2024-004', course: 'B.Tech CSE 2024-28' },
     { id: '5', name: 'Suvansh Sharma', rollNo: 'CSE-2024-005', course: 'B.Tech CSE 2024-28' },
+    { id: '6', name: 'Arukshita', rollNo: 'CSE-2024-006', course: 'B.Tech CSE 2024-28' },
 ];
 
 const INITIAL_LOGS = [
@@ -149,7 +150,7 @@ const StudentPortal = ({ studentId, students, logs, onLogout, toggleTheme, isDar
                 <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
                     <div className="flex items-center gap-4 font-bold text-2xl text-stone-800 dark:text-stone-100">
                         <Logo className="h-12 w-auto" />
-                        <span className="tracking-tight">Bahra University</span>
+                        <span className="tracking-tight">Bahra University Portal</span>
                     </div>
                     <div className="flex items-center gap-4">
                         <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
@@ -657,16 +658,17 @@ const RoleSelection = ({ onSelectFaculty, onSelectStudent, students, toggleTheme
 
                 {/* Right Side - Forms */}
                 <div className="w-full md:w-1/2 p-8 md:p-12 relative bg-white dark:bg-stone-900">
+                    {/* Fixed position toggle on mobile/desktop to ensure visibility */}
                     <div className="absolute top-6 right-6">
                         <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} className="bg-stone-100 dark:bg-stone-800" />
                     </div>
 
                     <div className="space-y-8 mt-4">
                         <div className="p-6 bg-amber-50 dark:bg-amber-900/10 rounded-2xl border border-amber-100 dark:border-amber-900/20 shadow-sm hover:shadow-md transition-shadow">
-                            <p className="font-bold text-stone-800 dark:text-stone-100 flex items-center gap-3 mb-4 text-lg">
+                            <div className="font-bold text-stone-800 dark:text-stone-100 flex items-center gap-3 mb-4 text-lg">
                                 <div className="p-2 bg-amber-200 dark:bg-amber-800 rounded-lg text-amber-900 dark:text-amber-100"><UserCheck size={20} /></div>
                                 Faculty Login
-                            </p>
+                            </div>
                             <form onSubmit={handleFacultyLogin} className="space-y-4">
                                 <select value={selectedFaculty} onChange={(e) => setSelectedFaculty(e.target.value)} className="w-full p-3 text-base border border-stone-300 dark:border-stone-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 shadow-sm" required>
                                     <option value="">Select Faculty Member...</option>
@@ -682,10 +684,10 @@ const RoleSelection = ({ onSelectFaculty, onSelectStudent, students, toggleTheme
                         </div>
 
                         <div className="p-6 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-200 dark:border-stone-700 shadow-sm hover:shadow-md transition-shadow">
-                            <p className="font-bold text-stone-800 dark:text-stone-100 flex items-center gap-3 mb-4 text-lg">
+                            <div className="font-bold text-stone-800 dark:text-stone-100 flex items-center gap-3 mb-4 text-lg">
                                 <div className="p-2 bg-green-200 dark:bg-green-800 rounded-lg text-green-900 dark:text-green-100"><GraduationCap size={20} /></div>
                                 Student Portal
-                            </p>
+                            </div>
                             <form onSubmit={handleStudentLogin} className="space-y-4">
                                 <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="w-full p-3 text-base border border-stone-300 dark:border-stone-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 shadow-sm" required>
                                     <option value="">Select Student Name...</option>
@@ -744,30 +746,44 @@ export default function App() {
         }
     };
 
-    const toggleTheme = () => setDarkMode(!darkMode);
+    const toggleTheme = () => {
+        setDarkMode(prev => !prev);
+    };
+
+    useEffect(() => {
+        if (darkMode) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [darkMode]);
 
     return (
-        <div className={`${darkMode ? 'dark' : ''}`}>
+        <div className={`min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
             {/* View Container */}
-            <div className="flex h-screen bg-stone-50 dark:bg-stone-950 font-sans text-stone-900 dark:text-stone-100 transition-colors duration-300">
+            <div className="flex h-screen overflow-hidden">
 
                 {viewMode === 'selection' ? (
-                    <RoleSelection
-                        onSelectFaculty={handleFacultySelect}
-                        onSelectStudent={(id) => { setCurrentStudentId(id); setViewMode('student'); }}
-                        students={students}
-                        toggleTheme={toggleTheme}
-                        isDarkMode={darkMode}
-                    />
+                    <div className="flex-1 h-full overflow-y-auto">
+                        <RoleSelection
+                            onSelectFaculty={handleFacultySelect}
+                            onSelectStudent={(id) => { setCurrentStudentId(id); setViewMode('student'); }}
+                            students={students}
+                            toggleTheme={toggleTheme}
+                            isDarkMode={darkMode}
+                        />
+                    </div>
                 ) : viewMode === 'student' ? (
-                    <StudentPortal
-                        studentId={currentStudentId}
-                        students={students}
-                        logs={logs}
-                        onLogout={handleLogout}
-                        toggleTheme={toggleTheme}
-                        isDarkMode={darkMode}
-                    />
+                    <div className="flex-1 h-full overflow-y-auto">
+                        <StudentPortal
+                            studentId={currentStudentId}
+                            students={students}
+                            logs={logs}
+                            onLogout={handleLogout}
+                            toggleTheme={toggleTheme}
+                            isDarkMode={darkMode}
+                        />
+                    </div>
                 ) : (
                     /* Faculty View Wrapper */
                     <>
@@ -780,8 +796,8 @@ export default function App() {
                             currentFaculty={currentFaculty}
                         />
 
-                        <div className="flex-1 flex flex-col h-screen overflow-hidden">
-                            <header className="lg:hidden bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 p-4 flex items-center justify-between z-10">
+                        <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
+                            <header className="lg:hidden bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 p-4 flex items-center justify-between z-10 shrink-0">
                                 <div className="flex items-center gap-2 font-bold text-lg text-stone-800 dark:text-stone-100">
                                     <Logo className="h-8 w-auto" />
                                     <span>Bahra</span>
@@ -794,11 +810,12 @@ export default function App() {
                                 </div>
                             </header>
 
-                            <main className="flex-1 overflow-auto p-4 lg:p-8 relative">
-                                <div className="absolute top-6 right-8 hidden lg:block z-20">
-                                    <ThemeToggle isDarkMode={darkMode} toggleTheme={toggleTheme} className="bg-white dark:bg-stone-800 shadow-sm border border-stone-200 dark:border-stone-700" />
-                                </div>
+                            {/* Desktop Theme Toggle - Moved OUTSIDE of the scrolling main area */}
+                            <div className="absolute top-6 right-8 hidden lg:block z-50">
+                                <ThemeToggle isDarkMode={darkMode} toggleTheme={toggleTheme} className="bg-white dark:bg-stone-800 shadow-sm border border-stone-200 dark:border-stone-700" />
+                            </div>
 
+                            <main className="flex-1 overflow-auto p-4 lg:p-8">
                                 <div className="max-w-7xl mx-auto">
                                     {activeView === 'dashboard' && (
                                         <FacultyDashboard
