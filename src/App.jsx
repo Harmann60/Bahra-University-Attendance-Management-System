@@ -10,14 +10,6 @@ import {
     Grid, Layers, Award
 } from 'lucide-react';
 
-// --- IMPORTANT SETUP FOR LOGO ---
-// To use your local logo:
-// 1. Ensure you have a file named 'logo.png' in a folder named 'assets' inside 'src'.
-// 2. Uncomment the line below:
-
-// For the online preview to work without the local file, we use a placeholder.
-// If you uncomment the import above, change this line to: const LOGO_FILENAME = logo;
-
 import logo from './assets/logo.png';
 const LOGO_FILENAME = logo;
 
